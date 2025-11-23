@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Form Fotos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  
+  <!-- Título -->
+  <ion-item>
+    <ion-label position="stacked">Título</ion-label>
+    <ion-input [(ngModel)]="titulo" placeholder="Mascota perdida"></ion-input>
+  </ion-item>
+
+  <!-- Foto -->
+  <div *ngIf="foto" style="text-align:center; margin:10px 0;">
+    <img [src]="foto" alt="Foto seleccionada" style="width:200px; height:auto; border-radius:8px;">
+  </div>
+  <ion-button expand="full" color="dark" (click)="tomarFoto()">
+    <ion-icon slot="start" name="camera"></ion-icon>
+    Fotografía
+  </ion-button>
+
+  <!-- Descripción -->
+  <ion-item>
+    <ion-label position="stacked">Descripción</ion-label>
+    <ion-input [(ngModel)]="descripcion" placeholder="Ej: Se perdió cerca del parque..."></ion-input>
+  </ion-item>
+
+  <!-- Botón Guardar -->
+  <ion-button expand="full" color="primary" style="margin-top:20px;" (click)="guardarMascota()">
+    Guardar
+  </ion-button>
+
+</ion-content>

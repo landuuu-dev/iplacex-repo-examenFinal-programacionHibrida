@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Listado Objetos Perdidas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngFor="let item of objetos" class="item" style="margin-bottom:15px; border-bottom:1px solid #ccc; padding-bottom:10px;">
+    <strong>{{ item.titulo }}</strong>
+    <img *ngIf="item.foto" [src]="item.foto" alt="foto" style="width:100%; max-width:200px; margin-top:5px; border-radius:8px"/>
+    <p>{{ item.descripcion }}</p>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="irAFormFotos()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
