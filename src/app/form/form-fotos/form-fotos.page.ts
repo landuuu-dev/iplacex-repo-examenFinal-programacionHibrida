@@ -4,13 +4,30 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon } from '@ionic/angular/standalone';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Router } from '@angular/router';
+import { ObjetosPerdidos } from '../../service/appLogica/objetos-perdidos';
+
 
 @Component({
   selector: 'app-form-fotos',
   templateUrl: './form-fotos.page.html',
   styleUrls: ['./form-fotos.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon, CommonModule, FormsModule]
+  imports: [
+  CommonModule,    // incluye NgIf, NgFor
+  FormsModule,     // para [(ngModel)]
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonBackButton,
+  IonButtons,
+  IonIcon
+]
+
 })
 export class FormFotosPage {
 
@@ -18,7 +35,7 @@ export class FormFotosPage {
   descripcion: string = '';
   foto: string | undefined;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private objetosPerdidos: ObjetosPerdidos) {}
 
   async tomarFoto() {
     const image = await Camera.getPhoto({
@@ -29,13 +46,15 @@ export class FormFotosPage {
     this.foto = image.dataUrl;
   }
 
-  guardarMascota() {
-    // Aquí normalmente guardarías en una base de datos o estado global
-    console.log({
+  async guardarObjeto() {
+    if (!this.titulo || !this.descripcion) return alert('Completa los campos');
+
+    await this.objetosPerdidos.agregarObjeto({
       titulo: this.titulo,
       descripcion: this.descripcion,
       foto: this.foto
     });
-    this.router.navigate(['/']); // vuelve a Home
+
+    this.router.navigate(['/']); // vuelve al home
   }
 }
