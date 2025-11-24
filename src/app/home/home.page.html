@@ -15,7 +15,8 @@
     <div class="pub-info">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.descripcion }}</p>
-      <small style="color: gray;">{{ item.fechaHora }}</small>
+      <small style="color: gray;">{{ item.fechaHora | date:'medium' }}</small>
+
     </div>
 
     <!-- Basurero -->

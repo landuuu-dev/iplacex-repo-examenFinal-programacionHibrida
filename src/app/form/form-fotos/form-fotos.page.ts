@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ObjetosPerdidos, Objeto } from '../../service/appLogica/objetos-perdidos';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon } from '@ionic/angular/standalone';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-form-fotos',
@@ -14,7 +16,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
   imports: [
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonButton,
-    IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon
+    IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon, DatePipe
   ]
 })
 export class FormFotosPage {
@@ -39,13 +41,15 @@ export class FormFotosPage {
     if (this.titulo.length < 5) return alert('Título mínimo 5 caracteres');
     if (this.descripcion.length < 20) return alert('Descripción mínima 20 caracteres');
 
-    const fechaHoraFormateada = new Date().toLocaleString();
+    const fechaActual = new Date();
+
 
     const nuevoObjeto: Objeto = {
       titulo: this.titulo,
       descripcion: this.descripcion,
       foto: this.foto,
-      fechaHora: fechaHoraFormateada
+      fechaHora: fechaActual.toISOString() 
+
     };
 
     await this.objetosPerdidos.agregarObjeto(nuevoObjeto);

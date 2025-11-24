@@ -2,9 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ObjetosPerdidos, Objeto } from '../service/appLogica/objetos-perdidos';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
 import { AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { CommonModule, DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-home',
