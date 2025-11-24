@@ -12,19 +12,9 @@ import { Camera, CameraResultType } from '@capacitor/camera';
   styleUrls: ['./form-fotos.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButton,
-    IonItem,
-    IonInput,
-    IonLabel,
-    IonBackButton,
-    IonButtons,
-    IonIcon
+    CommonModule, FormsModule,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonButton,
+    IonItem, IonInput, IonLabel, IonBackButton, IonButtons, IonIcon
   ]
 })
 export class FormFotosPage {
@@ -35,7 +25,6 @@ export class FormFotosPage {
 
   constructor(private router: Router, private objetosPerdidos: ObjetosPerdidos) {}
 
-  // Tomar foto con la cámara
   async tomarFoto() {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -45,15 +34,12 @@ export class FormFotosPage {
     this.foto = image.dataUrl;
   }
 
-  // Guardar objeto en localStorage
-  guardarObjeto() {
+  async guardarObjeto() {
     if (!this.titulo || !this.descripcion) return alert('Completa los campos');
     if (this.titulo.length < 5) return alert('Título mínimo 5 caracteres');
     if (this.descripcion.length < 20) return alert('Descripción mínima 20 caracteres');
 
-
-    const fechaActual = new Date();
-    const fechaHoraFormateada = fechaActual.toLocaleString(); // ej: 24/11/2025 08:45:00
+    const fechaHoraFormateada = new Date().toLocaleString();
 
     const nuevoObjeto: Objeto = {
       titulo: this.titulo,
@@ -62,9 +48,7 @@ export class FormFotosPage {
       fechaHora: fechaHoraFormateada
     };
 
-    this.objetosPerdidos.agregarObjeto(nuevoObjeto);
-
-    // Volver al home
+    await this.objetosPerdidos.agregarObjeto(nuevoObjeto);
     this.router.navigate(['/']);
   }
 }

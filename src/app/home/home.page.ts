@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ObjetosPerdidos, Objeto } from '../service/appLogica/objetos-perdidos';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { AlertController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +15,9 @@ import { AlertController } from '@ionic/angular';
     CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton
   ]
 })
-export class HomePage {
+export class HomePage implements OnDestroy {
   objetos: Objeto[] = [];
+  private sub!: Subscription;
 
   constructor(
     private router: Router,
@@ -24,7 +26,13 @@ export class HomePage {
   ) {}
 
   ionViewWillEnter() {
-    this.objetos = this.objetosPerdidos.getObjetos();
+    this.sub = this.objetosPerdidos.objetos$.subscribe(list => {
+      this.objetos = list;
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
   }
 
   irAFormFotos() {
@@ -36,20 +44,15 @@ export class HomePage {
       header: 'Confirmar eliminación',
       message: '¿Deseas eliminar esta publicación?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Eliminar',
           handler: async () => {
-            this.objetos.splice(index, 1);
-            await this.objetosPerdidos.guardarObjetos(this.objetos);
+            await this.objetosPerdidos.eliminarObjeto(index);
           }
         }
       ]
     });
-
     await alert.present();
   }
 }
