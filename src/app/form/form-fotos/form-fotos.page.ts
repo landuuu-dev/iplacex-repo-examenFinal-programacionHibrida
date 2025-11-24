@@ -47,14 +47,19 @@ export class FormFotosPage {
   }
 
   async guardarObjeto() {
-    if (!this.titulo || !this.descripcion) return alert('Completa los campos');
+  if (!this.titulo || !this.descripcion) return alert('Completa los campos');
 
-    await this.objetosPerdidos.agregarObjeto({
-      titulo: this.titulo,
-      descripcion: this.descripcion,
-      foto: this.foto
-    });
+  const fechaActual = new Date();
+  const fechaHoraFormateada = fechaActual.toLocaleString(); // ejemplo: 24/11/2025 08:45:00
 
-    this.router.navigate(['/']); // vuelve al home
-  }
+  await this.objetosPerdidos.agregarObjeto({
+    titulo: this.titulo,
+    descripcion: this.descripcion,
+    foto: this.foto,
+    fechaHora: fechaHoraFormateada // <-- aquí la asignamos
+  });
+
+  this.router.navigate(['/']); // vuelve al home
+}
+
 }

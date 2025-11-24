@@ -12,8 +12,10 @@
     <div class="pub-info">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.descripcion }}</p>
+      <p class="fechaHora">{{ item.fechaHora }}</p> <!-- aquí se muestra -->
     </div>
 
+ 
     <!-- Botón Basurero -->
     <ion-button fill="clear" color="danger" size="small" (click)="eliminarObjeto(i)">
       <ion-icon name="trash"></ion-icon>

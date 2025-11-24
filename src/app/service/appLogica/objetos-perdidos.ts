@@ -4,6 +4,7 @@ export interface Objeto {
   titulo: string;
   descripcion: string;
   foto?: string;
+  fechaHora?: string; 
 }
 
 @Injectable({
