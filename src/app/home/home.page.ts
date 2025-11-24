@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ObjetosPerdidos, Objeto } from '../service/appLogica/objetos-perdidos';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -24,7 +26,8 @@ import { CommonModule } from '@angular/common';
 export class HomePage {
   objetos: Objeto[] = [];
 
-  constructor(private router: Router, private objetosPerdidos: ObjetosPerdidos) {}
+  constructor(private router: Router, private objetosPerdidos: ObjetosPerdidos,   private alertController: AlertController
+) {}
 
   // Cargar objetos desde localStorage al entrar a la vista
   ionViewWillEnter() {
@@ -37,11 +40,20 @@ export class HomePage {
   }
 
   // Eliminar un objeto por índice
-  eliminarObjeto(index: number) {
-    const confirmado = confirm('¿Estás seguro de eliminar esta publicación?');
-    if (!confirmado) return;
+  async eliminarObjeto(index: number) {
+  const alert = await this.alertController.create({
+    header: 'Confirmar',
+    message: '¿Deseas eliminar esta publicación?',
+    buttons: [
+      { text: 'Cancelar', role: 'cancel' },
+      { text: 'Eliminar', handler: async () => {
+          this.objetos.splice(index, 1);
+          await this.objetosPerdidos.guardarObjetos(this.objetos);
 
-    this.objetosPerdidos.eliminarObjeto(index);
-    this.objetos = this.objetosPerdidos.getObjetos(); // refresca la lista
-  }
+        }}
+    ]
+  });
+  await alert.present();
+}
+
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 
 export interface Objeto {
   titulo: string;
@@ -11,25 +12,36 @@ export interface Objeto {
   providedIn: 'root',
 })
 export class ObjetosPerdidos {
-  private storageKey = 'objetosPerdidos';
+  private _storage: Storage | null = null;
+  private objetos: Objeto[] = [];
 
-  // Obtener objetos desde localStorage
-  getObjetos(): Objeto[] {
-    const data = localStorage.getItem(this.storageKey);
-    return data ? JSON.parse(data) : [];
+  constructor() {
+    this.init();
   }
 
-  // Guardar un nuevo objeto
-  agregarObjeto(objeto: Objeto) {
-    const objetos = this.getObjetos();
-    objetos.push(objeto);
-    localStorage.setItem(this.storageKey, JSON.stringify(objetos));
+  async init() {
+    const storage = new Storage({ name: '__mydb' });
+    this._storage = await storage.create();
+    const saved = await this._storage.get('objetos');
+    this.objetos = saved || [];
   }
 
-  // Eliminar un objeto
-  eliminarObjeto(index: number) {
-    const objetos = this.getObjetos();
-    objetos.splice(index, 1);
-    localStorage.setItem(this.storageKey, JSON.stringify(objetos));
+  getObjetos() {
+    return this.objetos;
+  }
+
+  async agregarObjeto(objeto: Objeto) {
+    this.objetos.push(objeto);
+    await this._storage?.set('objetos', this.objetos);
+  }
+
+  async guardarObjetos(objetos: Objeto[]) {
+    this.objetos = objetos;
+    await this._storage?.set('objetos', this.objetos);
+  }
+
+  async eliminarObjeto(index: number) {
+    this.objetos.splice(index, 1);
+    await this._storage?.set('objetos', this.objetos);
   }
 }

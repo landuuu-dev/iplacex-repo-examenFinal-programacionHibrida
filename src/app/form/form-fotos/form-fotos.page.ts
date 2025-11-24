@@ -48,6 +48,9 @@ export class FormFotosPage {
   // Guardar objeto en localStorage
   guardarObjeto() {
     if (!this.titulo || !this.descripcion) return alert('Completa los campos');
+    if (this.titulo.length < 5) return alert('Título mínimo 5 caracteres');
+    if (this.descripcion.length < 20) return alert('Descripción mínima 20 caracteres');
+
 
     const fechaActual = new Date();
     const fechaHoraFormateada = fechaActual.toLocaleString(); // ej: 24/11/2025 08:45:00
