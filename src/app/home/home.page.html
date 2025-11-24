@@ -6,13 +6,19 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
-  <div *ngFor="let item of objetos" class="pub-card">
+  <div *ngFor="let item of objetos; let i = index" class="pub-card">
     <img *ngIf="item.foto" [src]="item.foto" alt="foto" class="pub-img"/>
 
     <div class="pub-info">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.descripcion }}</p>
     </div>
+
+    <!-- Botón Basurero -->
+    <ion-button fill="clear" color="danger" size="small" (click)="eliminarObjeto(i)">
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
+
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ObjetosPerdidos, Objeto } from '../service/appLogica/objetos-perdidos';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonButton, 
   CommonModule,    // para *ngIf y *ngFor
   IonHeader,
   IonToolbar,
@@ -21,6 +22,9 @@ import { CommonModule } from '@angular/common';
 ]
 
 })
+
+
+
 export class HomePage {
   objetos: Objeto[] = [];
 
@@ -32,5 +36,14 @@ export class HomePage {
 
   irAFormFotos() {
     this.router.navigate(['/form-fotos']);
+  }
+
+  // 🔥 Función para eliminar un objeto
+  async eliminarObjeto(index: number) {
+    const confirmado = confirm('¿Estás seguro de eliminar esta publicación?');
+    if (!confirmado) return;
+
+    await this.objetosPerdidos.eliminarObjeto(index);
+    this.objetos = await this.objetosPerdidos.getObjetos(); // actualizar lista
   }
 }

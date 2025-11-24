@@ -19,6 +19,8 @@ export class ObjetosPerdidos {
   agregarObjeto(objeto: Objeto) {
     this.objetos.push(objeto);
   }
-  
-}
 
+  eliminarObjeto(index: number) {
+    this.objetos.splice(index, 1); // elimina 1 elemento en la posición index
+  }
+}
