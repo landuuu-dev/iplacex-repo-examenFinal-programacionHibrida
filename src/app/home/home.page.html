@@ -6,23 +6,26 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
-  <div *ngFor="let item of objetos; let i = index" class="pub-card">
+  <div *ngFor="let item of objetos; let i = index" class="pub-card" style="position: relative; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; padding: 10px;">
+
+    <!-- Imagen del objeto -->
     <img *ngIf="item.foto" [src]="item.foto" alt="foto" class="pub-img"/>
 
+    <!-- Información -->
     <div class="pub-info">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.descripcion }}</p>
-      <p class="fechaHora">{{ item.fechaHora }}</p> <!-- aquí se muestra -->
+      <small style="color: gray;">{{ item.fechaHora }}</small>
     </div>
 
- 
-    <!-- Botón Basurero -->
-    <ion-button fill="clear" color="danger" size="small" (click)="eliminarObjeto(i)">
+    <!-- Basurero -->
+    <ion-button fill="clear" color="danger" size="small" (click)="eliminarObjeto(i)" style="position: absolute; top: 10px; right: 10px;">
       <ion-icon name="trash"></ion-icon>
     </ion-button>
 
   </div>
 
+  <!-- Botón agregar nuevo objeto -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="irAFormFotos()">
       <ion-icon name="add"></ion-icon>

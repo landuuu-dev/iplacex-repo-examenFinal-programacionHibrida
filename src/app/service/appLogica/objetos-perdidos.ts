@@ -4,24 +4,32 @@ export interface Objeto {
   titulo: string;
   descripcion: string;
   foto?: string;
-  fechaHora?: string; 
+  fechaHora?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ObjetosPerdidos {
-  private objetos: Objeto[] = [];
+  private storageKey = 'objetosPerdidos';
 
-  getObjetos() {
-    return this.objetos;
+  // Obtener objetos desde localStorage
+  getObjetos(): Objeto[] {
+    const data = localStorage.getItem(this.storageKey);
+    return data ? JSON.parse(data) : [];
   }
 
+  // Guardar un nuevo objeto
   agregarObjeto(objeto: Objeto) {
-    this.objetos.push(objeto);
+    const objetos = this.getObjetos();
+    objetos.push(objeto);
+    localStorage.setItem(this.storageKey, JSON.stringify(objetos));
   }
 
+  // Eliminar un objeto
   eliminarObjeto(index: number) {
-    this.objetos.splice(index, 1); // elimina 1 elemento en la posición index
+    const objetos = this.getObjetos();
+    objetos.splice(index, 1);
+    localStorage.setItem(this.storageKey, JSON.stringify(objetos));
   }
 }
