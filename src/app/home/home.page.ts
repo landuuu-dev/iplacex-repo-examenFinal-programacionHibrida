@@ -5,55 +5,51 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonI
 import { CommonModule } from '@angular/common';
 import { AlertController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, // para *ngIf y *ngFor
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonFab,
-    IonFabButton,
-    IonIcon,
-    IonButton
+    CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonButton
   ]
 })
 export class HomePage {
   objetos: Objeto[] = [];
 
-  constructor(private router: Router, private objetosPerdidos: ObjetosPerdidos,   private alertController: AlertController
-) {}
+  constructor(
+    private router: Router,
+    private objetosPerdidos: ObjetosPerdidos,
+    private alertController: AlertController
+  ) {}
 
-  // Cargar objetos desde localStorage al entrar a la vista
   ionViewWillEnter() {
     this.objetos = this.objetosPerdidos.getObjetos();
   }
 
-  // Navegar al formulario para agregar objeto
   irAFormFotos() {
     this.router.navigate(['/form-fotos']);
   }
 
-  // Eliminar un objeto por índice
   async eliminarObjeto(index: number) {
-  const alert = await this.alertController.create({
-    header: 'Confirmar',
-    message: '¿Deseas eliminar esta publicación?',
-    buttons: [
-      { text: 'Cancelar', role: 'cancel' },
-      { text: 'Eliminar', handler: async () => {
-          this.objetos.splice(index, 1);
-          await this.objetosPerdidos.guardarObjetos(this.objetos);
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Deseas eliminar esta publicación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            this.objetos.splice(index, 1);
+            await this.objetosPerdidos.guardarObjetos(this.objetos);
+          }
+        }
+      ]
+    });
 
-        }}
-    ]
-  });
-  await alert.present();
-}
-
+    await alert.present();
+  }
 }
